@@ -18,7 +18,8 @@
             30,
             47
         ],
-        "min-peers": 4
+        "n-fingers": 4,
+        "min-peers": 8
     }
 }
 
