@@ -10,8 +10,15 @@
         }
     },
     "explorer": {
-        "n-fingers": 4,
-        "min-peers": 8
+        "fingers": [
+            0, 
+            10,
+            12,
+            20,
+            30,
+            47
+        ],
+        "min-peers": 4
     }
 }
 
