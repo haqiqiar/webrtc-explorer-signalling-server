@@ -27,13 +27,6 @@ server.route({
     }
 });
 
-server.route({
-    method: 'GET',
-    path: '/cf',
-    handler: function(request, reply) {
-        reply(clientFingerTables);
-    }
-});
 
 server.start(started);
 
@@ -80,11 +73,6 @@ function ioHandler(socket) {
     // }
     socket.on('get-resource-peers', getResourcePeers);
 
-
-    socket.on('client-finger-update', function(clientFingerTable){
-        clientFingerTables[socket.id] = clientFingerTable;
-    });
-
     function registerPeer(data) {
         peerId = new Id(Id.hash(data.id));
         peers[peerId.toHex()] = {
@@ -102,33 +90,6 @@ function ioHandler(socket) {
         updateFingers();
     }
 
-    function checkFingerTable(){
-        var p = clone(peers);
-        var startPeer;
-
-        Object.keys(peers).some(function(k){
-//    console.log(k);
-//    console.log(peers[k].fingerTable);
-            startPeer = k;
-            return true;
-            //check if all peers are reachable
-        });
-
-        var current = p[startPeer];
-        while(Object.keys(p).length > 0){
-            var next = p[current.fingerTable[1].current];
-
-            if(typeof(next) === 'undefined'){
-                console.log("peer %s not in fingertable anymore", current.fingerTable[1].current);
-                exit(0);
-                break;
-            }
-
-            delete p[current.fingerTable[1].current];
-            current = next;
-        }
-
-    }
 
     function calculateIdealFingers(peerId) {
         //var fingers = config.get('explorer.fingers');
@@ -320,23 +281,22 @@ function ioHandler(socket) {
         }
     }
 
-    function getResourcePeers(data){
-        var keys = resourcePeers.keys(object);
+    function getResourcePeers(data, cb){
+        var keys = Object.keys(resourcePeers);
 
         var discoveredPeers = [];
 
         for(var i = 0; i<Math.min(keys.length, numberOfResourcePeers); i++) {
             var p = keys[Math.floor(keys.length * Math.random())];
 
-            if(p in discoveredPeers) {
+            if(p in discoveredPeers || p === peerId) {
                 i--;
             } else {
                 discoveredPeers.push(p);
             }
         }
 
-        sockets[peers[peerId].socketId].emit('get-resource-peers', discoveredPeers);
-
+        cb(discoveredPeers);
     }
 
 }
