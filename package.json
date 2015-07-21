@@ -4,10 +4,10 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "config": "^1.10.0",
-    "dht-id": "^1.0.0",
-    "hapi": "^8.1.0",
-    "socket.io": "^1.2.1"
+    "config": "latest",
+    "dht-id": "latest",
+    "hapi": "latest",
+    "socket.io": "latest"
   },
   "devDependencies": {
     "code": "^1.2.1",
