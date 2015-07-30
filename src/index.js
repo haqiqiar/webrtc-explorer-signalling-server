@@ -57,6 +57,7 @@ function ioHandler(socket) {
     var peerId;
     // signalling server interactions
     socket.on('s-register', registerPeer);
+    socket.on('s-unregister', unregisterPeer);
     socket.on('disconnect', peerRemove); // socket.io own event
     socket.on('s-send-offer', sendOffer);
     socket.on('s-offer-accepted', offerAccepted);
@@ -74,6 +75,7 @@ function ioHandler(socket) {
     socket.on('get-resource-peers', getResourcePeers);
 
     function registerPeer(data) {
+        console.log("Register peer ", data);
         peerId = new Id(Id.hash(data.id));
         peers[peerId.toHex()] = {
             socketId:  socket.id,
@@ -87,6 +89,19 @@ function ioHandler(socket) {
         console.log('registered new peer: %s(%s)', peerId.toHex(), data.id);
 
         calculateIdealFingers(peerId);
+        updateFingers();
+    }
+
+    function unregisterPeer(data) {
+        Object.keys(peers).map(function(peerId) {
+            if (peers[peerId].socketId === socket.id) {
+                delete peers[peerId];
+                delete sockets[socket.id];
+                delete pendingSocketOperations[socket.id];
+                console.log('peer with Id: %s has disconnected', peerId);
+            }
+        });
+
         updateFingers();
     }
 
