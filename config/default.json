@@ -1,6 +1,6 @@
 {
     "hapi": {
-        "port": 9000,
+        "port": 8443,
         "options": {
             "connections": {
                 "routes": {

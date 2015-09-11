@@ -304,7 +304,7 @@ function ioHandler(socket) {
         for(var i = 0; i<Math.min(keys.length, numberOfResourcePeers); i++) {
             var p = keys[Math.floor(keys.length * Math.random())];
 
-            if(p in discoveredPeers || p === peerId) {
+            if(discoveredPeers.indexOf(p) >= 0 || p === peerId) {
                 i--;
             } else {
                 discoveredPeers.push(p);
