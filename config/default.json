@@ -19,7 +19,7 @@
             47
         ],
         "n-fingers": 1,
-        "min-peers": 1000
+        "min-peers": 4
     }
 }
 
