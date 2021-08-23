@@ -1,12 +1,12 @@
 var Hapi = require('Hapi');
 var io = require('socket.io');
-var config = require('config');
+var config = require('./config');
 var Id = require('dht-id');
 
-var server = new Hapi.Server(config.get('hapi.options'));
+var server = new Hapi.Server(config.hapi.options);
 
 server.connection({
-    port: config.get('hapi.port')
+    port: config.hapi.port
 });
 
 server.route({
@@ -73,7 +73,7 @@ function ioHandler(socket) {
     }
 
     function calculateIdealFingers(peerId) {
-        var fingers = config.get('explorer.fingers');
+        var fingers = config.explorer.fingers;
         var k = 1;
         while (k <= fingers.length) {
             var ideal = (peerId.toDec() + Math.pow(2, fingers[k - 1])) %
@@ -138,7 +138,7 @@ function ioHandler(socket) {
                 }
 
                 if (Object.keys(peers).length <
-                        config.get('explorer.min-peers')) {
+                        config.explorer.minPeers) {
                     return true; // stops the loop, calculates only
                     // for the first position (aka sucessor of the node
                 }
