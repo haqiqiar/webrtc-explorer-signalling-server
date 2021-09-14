@@ -1,6 +1,6 @@
 {
     "hapi": {
-        "port": 9000,
+        "port": 8443,
         "options": {
             "connections": {
                 "routes": {
@@ -18,6 +18,7 @@
             30,
             47
         ],
+        "n-fingers": 1,
         "min-peers": 4
     }
 }
