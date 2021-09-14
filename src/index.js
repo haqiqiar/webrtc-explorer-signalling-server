@@ -1,4 +1,4 @@
-var Hapi = require('Hapi');
+var Hapi = require('hapi');
 var io = require('socket.io');
 var config = require('./config');
 var Id = require('dht-id');
